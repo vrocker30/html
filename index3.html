@@ -1,0 +1,288 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>My Website</title>  
+  <style>  
+    /* CSS for the navigation links */  
+    nav ul {  
+      list-style-type: none;  
+      margin: 0;  
+      padding: 0;  
+      display: flex;  
+    }  
+        
+    nav li {  
+      flex: 1;  
+    }  
+        
+    nav a {  
+      display: block;  
+      padding: 10px;  
+      text-align: center;  
+      background-color: #f2f2f2;  
+      border: 1px solid #ccc;  
+      text-decoration: none;  
+      color: #333;  
+    }  
+  
+    /* CSS for the home page section */  
+    .home-section {  
+      text-align: center;  
+    }  
+  
+    /* CSS for the line separator */  
+    .line-separator {  
+      border-top: 1px solid #ccc;  
+      margin: 20px 0;  
+    }  
+  
+    /* CSS for the calendar */  
+    #calendar {  
+      max-width: 800px;  
+      margin: 0 auto;  
+    }  
+  </style>  
+  <!-- Add FullCalendar CSS -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">  
+</head>  
+<body>  
+  <!-- Navigation Links -->  
+  <nav>  
+    <ul>  
+      <li><a href="index.html">Home</a></li>  
+      <li><a href="events.html">Events</a></li>  
+      <li><a href="members.html">Members</a></li>  
+      <li><a href="memories.html">Memories</a></li>  
+      <li><a href="posts.html">Posts</a></li>  
+    </ul>  
+  </nav>  
+    
+  <!-- Home Page -->  
+  <div class="home-section">  
+    <h1>OHS Class of 1984</h1>  
+    <p>Welcome to our place, join catch up and see what's happening.</p>  
+  </div>  
+    
+  <!-- Line Separator -->  
+  <div class="line-separator"></div>  
+  
+  
+  <!-- Posts Page -->  
+  <h2>Posts</h2>  
+  <div id="latestTitle"></div>  
+<div id="last5Posts"></div> 
+  <form>  
+  <label for="title">Title:</label>  
+  <input type="text" id="title" name="title" required><br>  
+  <label for="message">Message:</label>  
+  <textarea id="message" name="message" required></textarea><br>  
+  <input type="submit" value="Submit">  
+</form>  
+ 
+
+ <!-- Line Separator -->  
+  <div class="line-separator"></div> 
+  
+   <!-- Calendar -->  
+  <div id="calendar"></div>   
+  
+ <!-- Events Page -->  
+  <a href="events.html">  
+    <div id="eventsBox">  
+      <h2>Events</h2>  
+      <p>Click here to go to the events page</p>  
+    </div>  
+  </a>  
+  
+  <!-- Members Page -->  
+  <a href="members.html">  
+    <div id="membersBox">  
+      <h2>Members</h2>  
+      <p>Click here to go to the members page</p>  
+    </div>  
+  </a>  
+  
+  <!-- Memories Page -->  
+  <a href="memories.html">  
+    <div id="memoriesBox">  
+      <h2>Memories</h2>  
+      <p>Click here to go to the memories page</p>  
+    </div>  
+  </a>  
+  
+  <!-- Posts Page -->  
+  <a href="posts.html">  
+    <div id="postsBox">  
+      <h2>Posts</h2>  
+      <p>Click here to go to the posts page</p>  
+    </div>  
+  </a>  
+  
+ 
+  
+<!-- Add FullCalendar JavaScript dependencies -->  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>  
+  
+<!-- Initialize FullCalendar -->  
+<script>  
+  $(document).ready(function() {  
+    var calendar = $('#calendar').fullCalendar({  
+      header: {  
+        left: 'prev,next today',  
+        center: 'title',  
+        right: 'month,agendaWeek,agendaDay'  
+      },  
+      defaultView: 'month',  
+      height: 'auto',  
+      editable: true, // Enable dragging and resizing of events  
+      events: [  
+        {  
+          title: 'Event 1',  
+          start: '2021-01-01'  
+        },  
+      ]  
+    });  
+  
+    // Fetch the latest title  
+    $.ajax({  
+      url: 'your-api-endpoint-for-latest-title',  
+      method: 'GET',  
+      success: function(response) {  
+        $('#latestTitle').html('<h3>' + response.title + '</h3>');  
+      },  
+      error: function() {  
+        $('#latestTitle').text('Error fetching latest title.');  
+      }  
+    });  
+  
+    // Fetch the last 5 posts  
+    $.ajax({  
+      url: 'your-api-endpoint-for-last-5-posts',  
+      method: 'GET',  
+      success: function(response) {  
+        var posts = response.posts;  
+        var postsHtml = '';  
+  
+        // Generate HTML for each post  
+        for (var i = 0; i < posts.length; i++) {  
+          var post = posts[i];  
+          postsHtml += '<div>';  
+          postsHtml += '<h3>' + post.title + '</h3>';  
+          postsHtml += '<p>' + post.content + '</p>';  
+          postsHtml += '</div>';  
+        }  
+  
+        // Display the posts HTML  
+        $('#last5Posts').html(postsHtml);  
+      },  
+      error: function() {  
+        $('#last5Posts').text('Error fetching last 5 posts.');  
+      }  
+    });  
+  });  
+</script>  
+
+<!-- events.html -->  
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Events Page</title>  
+</head>  
+<body>  
+  <!-- Navigation Links -->  
+  <nav>  
+    <ul>  
+      <li><a href="index.html">Home</a></li>  
+      <li><a href="events.html">Events</a></li>  
+      <li><a href="members.html">Members</a></li>  
+      <li><a href="memories.html">Memories</a></li>  
+      <li><a href="posts.html">Posts</a></li>  
+    </ul>  
+  </nav>  
+  
+  <!-- Events Page Content -->  
+  <h1>Events Page</h1>  
+  <p>Welcome to the Events Page!</p>  
+  
+  <!-- Add Event Form -->  
+  <h2>Add New Event</h2>  
+  <form id="addEventForm">  
+    <label for="eventTitle">Event Title:</label>  
+    <input type="text" id="eventTitle" name="eventTitle" required><br>  
+    <label for="eventDate">Event Date:</label>  
+    <input type="date" id="eventDate" name="eventDate" required><br>  
+    <label for="eventLocation">Event Location:</label>  
+    <input type="text" id="eventLocation" name="eventLocation" required><br>  
+    <input type="submit" value="Add Event">  
+  </form>  
+  
+  <!-- Calendar -->  
+  <div id="calendar"></div>  
+  
+  <!-- Add FullCalendar JavaScript dependencies -->  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>  
+  
+  <!-- Initialize FullCalendar -->  
+  <script>  
+    $(document).ready(function() {  
+      var calendar = $('#calendar').fullCalendar({  
+        header: {  
+          left: 'prev,next today',  
+          center: 'title',  
+          right: 'month,agendaWeek,agendaDay'  
+        },  
+        defaultView: 'month',  
+        height: 'auto',  
+        editable: true, // Enable dragging and resizing of events  
+        events: [  
+          {  
+            title: 'Event 1',  
+            start: '2021-01-01'  
+          },  
+        ],  
+        eventRender: function(event, element) {  
+          element.append('<button class="remove-event-button">Remove</button>');  
+        },  
+        eventAfterRender: function(event, element, view) {  
+          element.find('.remove-event-button').click(function() {  
+            if (confirm("Are you sure you want to remove this event?")) {  
+              calendar.fullCalendar('removeEvents', event._id);  
+            }  
+          });  
+        }  
+      });   
+  
+      // Handle form submission to add event to calendar  
+      $('#addEventForm').on('submit', function(e) {  
+        e.preventDefault();  
+        var eventTitle = $('#eventTitle').val();  
+        var eventDate = $('#eventDate').val();  
+        var eventLocation = $('#eventLocation').val();  
+  
+        // Create the event object  
+        var event = {  
+          title: eventTitle,  
+          start: eventDate,  
+          location: eventLocation  
+        };  
+  
+        // Add the event to the calendar  
+        calendar.fullCalendar('renderEvent', event, true);  
+  
+        // Clear the form inputs  
+        $('#eventTitle').val('');  
+        $('#eventDate').val('');  
+        $('#eventLocation').val('');  
+      });  
+    });  
+  </script>  
+</body>  
+</html>  
